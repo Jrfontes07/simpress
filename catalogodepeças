@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Peças</title>
+    <style>
+        /* Estilos CSS para a página */
+        body {
+            background-color: #0074e4; /* Cor de fundo azul para o corpo da página */
+            font-family: Arial, sans-serif; /* Fonte para o texto */
+            margin: 0; /* Remover margens padrão */
+            padding: 0; /* Remover preenchimentos padrão */
+        }
+        h1 {
+            color: white; /* Cor do título */
+            text-align: center; /* Centralizar o título */
+            padding: 20px 0; /* Espaçamento ao redor do título */
+        }
+        #search-box {
+            margin: 20px auto; /* Centralizar a caixa de pesquisa */
+            display: block; /* Mostrar como bloco */
+            padding: 10px; /* Espaçamento interno */
+            border: none; /* Remover borda */
+            border-radius: 5px; /* Borda arredondada */
+            width: 80%; /* Largura da caixa de pesquisa */
+            font-size: 16px; /* Tamanho da fonte */
+        }
+        #results {
+            list-style-type: none;
+            padding: 0;
+            margin: 0 auto; /* Centralizar a lista de resultados */
+            max-width: 80%; /* Largura máxima da lista de resultados */
+            background-color: white; /* Fundo branco para a lista de resultados */
+            border-radius: 10px; /* Borda arredondada */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Sombra */
+            display: none; /* Ocultar a lista de resultados por padrão */
+        }
+        #results li {
+            margin: 10px 0;
+            padding: 10px;
+            border-bottom: 1px solid #ccc; /* Linhas separadoras */
+            color: #333; /* Cor do texto */
+            font-size: 14px; /* Tamanho da fonte */
+        }
+    </style>
+</head>
+<body>
+    <h1>Catálogo de Peças</h1>
+    <input type="text" id="search-box" placeholder="Pesquisar">
+    <ul id="results"></ul>
+
+    <script>
+        // Dados em formato JSON
+        var data = [
+            { "Marca": "Samsung", "Modelo": "M4070", "Código": "JC90-01143B", "Descrição": "Bandeja de Papel" },
+            { "Marca": "Samsung", "Modelo": "M4070", "Código": "JC95-02030B", "Descrição": "Tampa Frontal" },
+            { "Marca": "Samsung", "Modelo": "M4070", "Código": "JC91-01023A", "Descrição": "Fusor" },
+            { "Marca": "Samsung", "Modelo": "M4070", "Código": "JC92-02885A", "Descrição": "Placa Principal" },
+            { "Marca": "Samsung", "Modelo": "M4070", "Código": "JC97-04321V", "Descrição": "Painel Completo" },
+            // Itens adicionados anteriormente
+            { "Marca": "Samsung", "Modelo": "M4070", "Código": "JC97-04065A", "Descrição": "Laser" },
+            { "Marca": "Samsung", "Modelo": "M4070", "Código": "JC93-00544B", "Descrição": "Drive Main" },
+            { "Marca": "Samsung", "Modelo": "M4070", "Código": "JC90-01043C", "Descrição": "MP" },
+            { "Marca": "Samsung", "Modelo": "M4070", "Código": "JC93-00545A", "Descrição": "Drive Feed" },
+            { "Marca": "Samsung", "Modelo": "M4070", "Código": "JC47-00033A", "Descrição": "Clutch" },
+            { "Marca": "Samsung", "Modelo": "M4070", "Código": "0604-001393", "Descrição": "PHOTO-INTERRUPTER" },
+            { "Marca": "Samsung", "Modelo": "M4070", "Código": "JC44-00197A", "Descrição": "Placa de Alta HVPS" },
+            { "Marca": "Samsung", "Modelo": "M4070", "Código": "JC47-00036B", "Descrição": "Clutch" },
+            { "Marca": "Samsung", "Modelo": "M4070", "Código": "0609-001408", "Descrição": "CIS" },
+            { "Marca": "Samsung", "Modelo": "M4070", "Código": "JC39-01478A", "Descrição": "Cabo Flat CIS" },
+            { "Marca": "Samsung", "Modelo": "M4070", "Código": "JC97-03069A", "Descrição": "Separador ADF" },
+            { "Marca": "Samsung", "Modelo": "M4070", "Código": "JC93-00761A", "Descrição": "Drive DADF" },
+            { "Marca": "Samsung", "Modelo": "M4070", "Código": "JC44-00097E", "Descrição": "Fonte" },
+            { "Marca": "Samsung", "Modelo": "M4080", "Código": "JC90-01541A", "Descrição": "Duplex" },
+            { "Marca": "Samsung", "Modelo": "M4080", "Código": "JC59-00035A", "Descrição": "HD 320GB" },
+            { "Marca": "Samsung", "Modelo": "M4080", "Código": "JC90-01527A", "Descrição": "Bandeja de Papel" },
+            { "Marca": "Samsung", "Modelo": "M4080", "Código": "JC92-02808A", "Descrição": "Placa Principal" },
+            { "Marca": "Samsung", "Modelo": "M4080", "Código": "JC44-00222B", "Descrição": "Fonte" },
+            { "Marca": "Samsung", "Modelo": "M4080", "Código": "JC44-00197A", "Descrição": "Placa de Alta HVPS" },
+            { "Marca": "Samsung", "Modelo": "M4080", "Código": "JC95-02003A", "Descrição": "Tampa Traseira" },
+            { "Marca": "Samsung", "Modelo": "M4080", "Código": "JC97-04699A", "Descrição": "Laser" },
+            { "Marca": "Samsung", "Modelo": "M4080", "Código": "JC91-01023A", "Descrição": "Fusor" },
+            { "Marca": "Samsung", "Modelo": "M4080", "Código": "JC90-01534A", "Descrição": "MP" },
+            { "Marca": "Samsung", "Modelo": "M4080", "Código": "JC93-01229A", "Descrição": "Drive Main" },
+            { "Marca": "Samsung", "Modelo": "M4080", "Código": "JC66-02842A", "Descrição": "Rolo de Transferência" },
+            { "Marca": "Samsung", "Modelo": "M4080", "Código": "JC93-00540B", "Descrição": "Rolete Bandeja" },
+            { "Marca": "Samsung", "Modelo": "M4080", "Código": "JC93-01230A", "Descrição": "Drive do Fusor" },
+            { "Marca": "Samsung", "Modelo": "M4080", "Código": "JC92-02809A", "Descrição": "Placa Painel" },
+            { "Marca": "Samsung", "Modelo": "M4080", "Código": "JC92-02818A", "Descrição": "Placa Teclado do Painel" },
+            { "Marca": "Samsung", "Modelo": "M4080", "Código": "JC97-04451B", "Descrição": "ADF" },
+            { "Marca": "Samsung", "Modelo": "M4080", "Código": "0609-001573", "Descrição": "CIS" },
+            { "Marca": "Samsung", "Modelo": "M4080", "Código": "JC39-02389A", "Descrição": "Cabo Flat CIS" },
+            { "Marca": "Samsung", "Modelo": "M4080", "Código": "JC82-00378A", "Descrição": "Rolo Apanhador ADF" },
+            { "Marca": "Samsung", "Modelo": "M4080", "Código": "JC82-00380A", "Descrição": "Rolo de Separação ADF" },
+            { "Marca": "Samsung", "Modelo": "M4080", "Código": "JC82-00374A", "Descrição": "Motor ADF" },
+            { "Marca": "Samsung", "Modelo": "ML5010", "Código": "JC91-01029A", "Descrição": "Fusor" },
+            { "Marca": "Samsung", "Modelo": "ML5010", "Código": "JC97-03877A", "Descrição": "Laser" },
+            { "Marca": "Samsung", "Modelo": "ML5010", "Código": "JC44-00202A", "Descrição": "HVPS" },
+            { "Marca": "Samsung", "Modelo": "ML5010", "Código": "JC90-01091A", "Descrição": "Bandeja de Papel" },
+            { "Marca": "Samsung", "Modelo": "ML5010", "Código": "JC97-02259A", "Descrição": "Rolete Bandeja" },
+            { "Marca": "Samsung", "Modelo": "ML5010", "Código": "0604-001325", "Descrição": "Sensor Feed / Registro" },
+            { "Marca": "Samsung", "Modelo": "ML5010", "Código": "JC66-02906A", "Descrição": "Atuador Duplex" },
+            { "Marca": "Samsung", "Modelo": "ML5010", "Código": "JC93-00350A", "Descrição": "Motor Elevação Bandeja" },
+            { "Marca": "Samsung", "Modelo": "ML5010", "Código": "JC93-00351A", "Descrição": "Engrenagem Movimentação Fusor" },
+            { "Marca": "Samsung", "Modelo": "ML5010", "Código": "JC44-00091C", "Descrição": "Fonte" },
+            { "Marca": "Samsung", "Modelo": "ML5010", "Código": "JC93-00348A", "Descrição": "Drive Main" },
+            { "Marca": "Samsung", "Modelo": "ML5010", "Código": "JC44-00203A", "Descrição": "FDB" },
+            { "Marca": "Samsung", "Modelo": "ML5010", "Código": "JC66-02913A", "Descrição": "Atuador Feed" },
+            { "Marca": "Samsung", "Modelo": "ML5010", "Código": "JC66-02914A", "Descrição": "Atuador Registro" },
+            { "Marca": "Samsung", "Modelo": "ML5010", "Código": "6107-001261", "Descrição": "Mola Atuador" },
+            { "Marca": "Samsung", "Modelo": "ML5010", "Código": "JC93-00393A", "Descrição": "Rolo de Transferência" },
+            // Itens adicionados
+            { "Marca": "HP", "Modelo": "E52645", "Código": "RM2-7948-000CN", "Descrição": "Fonte FPS" },
+            { "Marca": "HP", "Modelo": "E52645", "Código": "RM2-7951-000CN", "Descrição": "Fonte LVPS" },
+            { "Marca": "HP", "Modelo": "E42540", "Código": "RM3-7417-000CN", "Descrição": "Fonte" },
+            { "Marca": "Samsung", "Modelo": "M4020", "Código": "JC97-04065A", "Descrição": "Laser" },
+            { "Marca": "Samsung", "Modelo": "M4020", "Código": "JC39-01478A-SI", "Descrição": "Cabo Flat Laser" },
+            // Adicione mais dados aqui
+        ];
+
+        // Função para exibir resultados da pesquisa
+        function displayResults(results) {
+            var resultList = document.getElementById("results");
+            resultList.innerHTML = ""; // Limpar resultados anteriores
+
+            if (results.length > 0) {
+                resultList.style.display = "block"; // Mostrar a lista de resultados apenas se houver resultados
+            } else {
+                resultList.style.display = "none"; // Ocultar a lista de resultados se não houver resultados
+            }
+
+            results.forEach(function (item) {
+                var listItem = document.createElement("li");
+                listItem.textContent = "Marca: " + item.Marca + ", Modelo: " + item.Modelo + ", Código: " + item.Código + ", Descrição: " + item.Descrição;
+                resultList.appendChild(listItem);
+            });
+        }
+
+        // Evento de digitação na caixa de pesquisa
+        var searchBox = document.getElementById("search-box");
+        searchBox.addEventListener("input", function () {
+            var query = searchBox.value.toLowerCase();
+            var results = data.filter(function (item) {
+                return (
+                    item.Marca.toLowerCase().includes(query) ||
+                    item.Modelo.toLowerCase().includes(query) ||
+                    item.Código.toLowerCase().includes(query) ||
+                    item.Descrição.toLowerCase().includes(query)
+                );
+            });
+            displayResults(results);
+        });
+
+        // Limpar resultados quando a pesquisa for apagada
+        searchBox.addEventListener("blur", function () {
+            if (searchBox.value === "") {
+                var resultList = document.getElementById("results");
+                resultList.style.display = "none";
+            }
+        });
+    </script>
+</body>
+</html>
